@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import { URL } from '../../../config';
 import styles from './newsList.css';
-import Button from '../Buttons/button';
+import Button from '../Buttons/buttons';
 import CardInfo from '../../widgets/CardInfo/cardinfo';
 
 class NewsList extends Component {
