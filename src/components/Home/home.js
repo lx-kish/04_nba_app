@@ -1,6 +1,6 @@
 import React from 'react';
 
-import NewsSlider from '../widgets/NewsSlider/slider'
+import NewsSlider from '../widgets/NewsSlider/slider';
 import NewsList from '../widgets/NewsList/newsList';
 import VideosList from '../widgets/VideosList/videosList';
 
@@ -10,7 +10,7 @@ const Home = () => {
             <NewsSlider
                 type="featured"
                 start={0}
-                end={3}
+                amount={3}
                 settings={{
                     dots:false
                 }}
