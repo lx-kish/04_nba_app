@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from './signin.css';
 import FormField from '../widgets/FormFields/formFields';
-import { isNull } from 'util';
+import { firebase } from '../../firebase';
 
 class SignIn extends Component {
 
@@ -94,26 +94,49 @@ class SignIn extends Component {
     submitForm = (event, type) => {
         event.preventDefault();
 
-        if(type !== null){
+        if (type !== null) {
             let dataToSubmit = {};
             let formIsValid = true;
 
-            for(let key in this.state.formdata){
+            for (let key in this.state.formdata) {
                 dataToSubmit[key] = this.state.formdata[key].value;
             }
-            for(let key in this.state.formdata){
+            for (let key in this.state.formdata) {
                 formIsValid = this.state.formdata[key].valid && formIsValid;
             }
 
-            if(formIsValid){
+            if (formIsValid) {
                 this.setState({
-                    loading:true,
-                    registerError:''
+                    loading: true,
+                    registerError: ''
                 })
-                if(type){
-                    console.log('Log in')
+                if (type) {
+                    firebase.auth()
+                        .signInWithEmailAndPassword(
+                            dataToSubmit.email,
+                            dataToSubmit.password
+                        ).then(() => {
+                            this.props.history.push('/')
+                        }).catch(error => {
+                            this.setState({
+                                loading: false,
+                                registerError: error.message
+                            })
+                        })
+
                 } else {
-                    console.log('Register')
+                    firebase.auth()
+                        .createUserWithEmailAndPassword(
+                            dataToSubmit.email,
+                            dataToSubmit.password
+                        ).then(() => {
+                            this.props.history.push('/')
+                        }).catch(error => {
+                            this.setState({
+                                loading: false,
+                                registerError: error.message
+                            })
+                        })
                 }
             }
 
@@ -125,15 +148,21 @@ class SignIn extends Component {
             'loading...'
             :
             <div>
-                <button onClick={(event)=>this.submitForm(event, false)}>Register now</button>
-                <button onClick={(event)=>this.submitForm(event, true)}>Log in</button>
+                <button onClick={(event) => this.submitForm(event, false)}>Register now</button>
+                <button onClick={(event) => this.submitForm(event, true)}>Log in</button>
             </div>
+    )
+
+    showError = () => (
+        this.state.registerError !== '' ?
+        <div className={styles.error}>{this.state.registerError}</div> 
+        : ''
     )
 
     render() {
         return (
             <div className={styles.logContainer}>
-                <form onSubmit={(event)=>this.submitForm(event, null)}>
+                <form onSubmit={(event) => this.submitForm(event, null)}>
                     <h2>Register / Log in</h2>
                     <FormField
                         id={'email'}
@@ -147,7 +176,8 @@ class SignIn extends Component {
                         change={(element) => this.updateForm(element)}
                     />
 
-                    { this.submitButton() }
+                    {this.submitButton()}
+                    {this.showError()}
 
                 </form>
             </div>
