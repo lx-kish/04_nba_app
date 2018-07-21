@@ -6,7 +6,7 @@ import FontAwesome from 'react-fontawesome';
 import style from './sideNav.css';
 
 const SideNaveItems = (props) => {
-    console.log(props)
+
     const items = [
         {
             type: style.option,
