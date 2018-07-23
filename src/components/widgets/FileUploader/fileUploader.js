@@ -3,24 +3,24 @@ import { firebase } from '../../../firebase';
 import FileUploader from 'react-firebase-file-uploader';
 
 class Uploader extends Component {
-    
+
     state = {
-        name:'',
-        isUploading:false,
-        progress:0,
-        fileURL:''
+        name: '',
+        isUploading: false,
+        progress: 0,
+        fileURL: ''
     }
 
     handleUploadStart = () => {
         this.setState({
-            isUploading:true,
-            progress:0
+            isUploading: true,
+            progress: 0
         })
     }
 
     handleUploadError = (error) => {
         this.setState({
-            isUploading:false
+            isUploading: false
         })
         console.log(error)
     }
@@ -32,7 +32,7 @@ class Uploader extends Component {
     }
 
     handleUploadSuccess = (filename) => {
-        console.log(filename);
+        
         this.setState({
             name: filename,
             progress: 100,
@@ -40,18 +40,20 @@ class Uploader extends Component {
         })
 
         firebase.storage().ref('images')
-        .child(filename).getDownloadURL()
-        .then( url => {
-            this.setState({
-                fileURL:url
+            .child(filename).getDownloadURL()
+            .then(url => {
+                this.setState({
+                    fileURL: url
+                })
             })
-        })
+
+            this.props.filename(filename)
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <div>
-                
+
                 <FileUploader
                     accept="image/*"
                     name="image"
@@ -62,6 +64,16 @@ class Uploader extends Component {
                     onUploadSuccess={this.handleUploadSuccess}
                     onProgress={this.handleProgress}
                 />
+                { this.state.isUploading ?
+                    <p>Progress:{this.state.progress}</p>
+                    : null
+                }
+                {this.state.fileURL ? 
+                    <img style={{
+                        width:'300px'
+                    }} src={this.state.fileURL}/>
+                    : null
+                }
             </div>
         )
     }
