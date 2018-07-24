@@ -57,7 +57,7 @@ class Uploader extends Component {
                 <FileUploader
                     accept="image/*"
                     name="image"
-                    randmizeFilename
+                    randomizeFilename
                     storageRef={firebase.storage().ref('images')}
                     onUploadStart={this.handleUploadStart}
                     onUploadError={this.handleUploadError}
