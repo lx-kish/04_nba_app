@@ -8,7 +8,7 @@ import style from './slider.css';
 const SliderTemplates = (props) => {
     let template = null;
     const settings = {
-        dots:true,
+        dots: true,
         infinite: true,
         arrows: false,
         speed: 500,
@@ -17,15 +17,15 @@ const SliderTemplates = (props) => {
         ...props.settings
     }
 
-    switch(props.type){
+    switch (props.type) {
         case ('featured'):
-            template = props.data.map( (item, i) =>{
-                return(
+            template = props.data.map((item, i) => {
+                return (
                     <div key={i}>
                         <div className={style.featured_item}>
                             <div className={style.featured_image}
                                 style={{
-                                    background:`url(../images/articles/${item.image})`
+                                    background: `url(${item.image})`
                                 }}>
                             </div>
                             <Link to={`/articles/${item.id}`}>
@@ -39,11 +39,11 @@ const SliderTemplates = (props) => {
             })
 
             break;
-            default:
+        default:
             template = null;
     }
 
-    return(
+    return (
         <Slick {...settings}>
             {template}
         </Slick>
