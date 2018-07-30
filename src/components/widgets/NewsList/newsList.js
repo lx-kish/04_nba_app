@@ -94,6 +94,7 @@ class NewsList extends Component {
                 ))
                 break;
             case ('cardMain'):
+                console.log(this.state.items);
                 template = this.state.items.map((item, i) => (
                     <CSSTransition
                         classNames={{
